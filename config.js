@@ -3,10 +3,6 @@
   const env = (typeof process !== "undefined" && process.env) ? process.env : {};
 
   const defaultConfig = {
-    adminAuth: {
-      username: env.ADMIN_USERNAME || "aslan",
-      password: env.ADMIN_PASSWORD || "340"
-    },
     firebaseConfig: {
       apiKey: env.FIREBASE_API_KEY || "AIzaSyCKA0k_9UgoJX_RBgEsIeNdiW2w0Okko1o",
       authDomain: env.FIREBASE_AUTH_DOMAIN || "festie-s1u2h3.firebaseapp.com",
@@ -47,9 +43,6 @@
       if (!res.ok) return defaultConfig;
       const text = await res.text();
       const parsed = parseDotEnv(text);
-
-      if (parsed.ADMIN_USERNAME) defaultConfig.adminAuth.username = parsed.ADMIN_USERNAME;
-      if (parsed.ADMIN_PASSWORD) defaultConfig.adminAuth.password = parsed.ADMIN_PASSWORD;
 
       if (parsed.FIREBASE_API_KEY) defaultConfig.firebaseConfig.apiKey = parsed.FIREBASE_API_KEY;
       if (parsed.FIREBASE_AUTH_DOMAIN) defaultConfig.firebaseConfig.authDomain = parsed.FIREBASE_AUTH_DOMAIN;
