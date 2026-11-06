@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Page - Festinger 2.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-red: #D2202D;
+      --color-yellow: #F0B81B;
+      --color-green: #22AC5E;
+      --color-deep-red: #BF2530;
+      --color-muted-coral: #C64B44;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #FFFFFF;
+      color: var(--color-deep-red);
+      padding: 1.5rem;
+      text-align: center;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .api-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(34, 172, 94, 0.1);
+      color: var(--color-green);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--color-green);
+    }
+
+    h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 800;
+      color: var(--color-deep-red);
+      letter-spacing: -0.02em;
+    }
+
+    .code-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-muted-coral);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="api-wrapper">
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      Active
+    </div>
+    <h1>API Page</h1>
+    <div class="code-tag">FESTINGER_2.0_BACKEND_API</div>
+  </div>
+</body>
+</html>
+
