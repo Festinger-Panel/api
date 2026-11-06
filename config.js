@@ -1,8 +1,10 @@
-// Universal Backend Configuration Loader (Browser & Node.js)
+// Universal Backend Configuration Loader (https://api-festinger.vercel.app)
 (function (root) {
+  const API_BASE_URL = "https://api-festinger.vercel.app";
   const env = (typeof process !== "undefined" && process.env) ? process.env : {};
 
   const defaultConfig = {
+    apiBaseUrl: API_BASE_URL,
     firebaseConfig: {
       apiKey: env.FIREBASE_API_KEY || "AIzaSyCKA0k_9UgoJX_RBgEsIeNdiW2w0Okko1o",
       authDomain: env.FIREBASE_AUTH_DOMAIN || "festie-s1u2h3.firebaseapp.com",
@@ -19,44 +21,23 @@
     }
   };
 
-  function parseDotEnv(text) {
-    const parsed = {};
-    text.split(/\r?\n/).forEach((line) => {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith("#")) return;
-      const eqIdx = trimmed.indexOf("=");
-      if (eqIdx === -1) return;
-      const key = trimmed.slice(0, eqIdx).trim();
-      let val = trimmed.slice(eqIdx + 1).trim();
-      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
-        val = val.slice(1, -1);
-      }
-      parsed[key] = val;
-    });
-    return parsed;
-  }
-
-  async function loadBackendEnv(envPath = "../backend/.env") {
+  async function loadBackendEnv() {
     if (typeof fetch !== "function") return defaultConfig;
     try {
-      const res = await fetch(envPath, { cache: "no-store" });
-      if (!res.ok) return defaultConfig;
-      const text = await res.text();
-      const parsed = parseDotEnv(text);
-
-      if (parsed.FIREBASE_API_KEY) defaultConfig.firebaseConfig.apiKey = parsed.FIREBASE_API_KEY;
-      if (parsed.FIREBASE_AUTH_DOMAIN) defaultConfig.firebaseConfig.authDomain = parsed.FIREBASE_AUTH_DOMAIN;
-      if (parsed.FIREBASE_PROJECT_ID) defaultConfig.firebaseConfig.projectId = parsed.FIREBASE_PROJECT_ID;
-      if (parsed.FIREBASE_STORAGE_BUCKET) defaultConfig.firebaseConfig.storageBucket = parsed.FIREBASE_STORAGE_BUCKET;
-      if (parsed.FIREBASE_MESSAGING_SENDER_ID) defaultConfig.firebaseConfig.messagingSenderId = parsed.FIREBASE_MESSAGING_SENDER_ID;
-      if (parsed.FIREBASE_APP_ID) defaultConfig.firebaseConfig.appId = parsed.FIREBASE_APP_ID;
-      if (parsed.FIREBASE_MEASUREMENT_ID) defaultConfig.firebaseConfig.measurementId = parsed.FIREBASE_MEASUREMENT_ID;
-
-      if (parsed.IMAGEKIT_URL_ENDPOINT) defaultConfig.imagekitConfig.urlEndpoint = parsed.IMAGEKIT_URL_ENDPOINT;
-      if (parsed.IMAGEKIT_PUBLIC_KEY) defaultConfig.imagekitConfig.publicKey = parsed.IMAGEKIT_PUBLIC_KEY;
-      if (parsed.IMAGEKIT_PRIVATE_KEY) defaultConfig.imagekitConfig.privateKey = parsed.IMAGEKIT_PRIVATE_KEY;
+      // Fetch live credentials from https://api-festinger.vercel.app/api/config
+      const res = await fetch(`${API_BASE_URL}/api/config`, { cache: "no-store" });
+      if (res.ok) {
+        const remoteData = await res.json();
+        if (remoteData.firebaseConfig) {
+          Object.assign(defaultConfig.firebaseConfig, remoteData.firebaseConfig);
+        }
+        if (remoteData.imagekitConfig) {
+          Object.assign(defaultConfig.imagekitConfig, remoteData.imagekitConfig);
+        }
+        return defaultConfig;
+      }
     } catch (_) {
-      // Fallback to defaultConfig when opened via file:// protocol
+      // Fallback to config loaded from https://api-festinger.vercel.app/config.js
     }
     return defaultConfig;
   }
